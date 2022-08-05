@@ -27,31 +27,28 @@ clipboard_polling_interval: 0.5
 #
 # Templates support all standard strftime() codes:
 # https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes
-# and these additional codes for relative time:
+# and these custom codes for relative time:
 # - {ts} - unix timestamp.
-# - {r_int} - number for relative time, as integer. E.g. 5 if selected timestamp was 5.5 h ago .
-# - {r_float} - number for relative time, as float. E.g. 5.5 if selected timestamp was 5.5 h ago.
-# - {r_unit} - relative time unit name. E.g. 'h' if selected timestamp was 5.5 h ago.
-# - {r_in} - if timestamp is in the future, will be 'in '. Empty otherwise.
-# - {r_ago} - if timestamp is in the past, will be ' ago'. Empty otherwise.
+# - {r_int} - relative time with integer number, e.g. '5 h ago'.
+# - {r_float} - relative time with float number, e.g. '5.5 h ago'.
 format_icon:
     # Up to 60 s, e.g. "1619295908 - 59 s ago"
-    60: "{ts} - {r_in}{r_int} {r_unit}{r_ago}"
+    60: "{ts} - {r_int}"
     # Up to 10 min, e.g. "1619295908 - 5 min ago"
-    600: "{ts} - {r_in}{r_int} {r_unit}{r_ago}"
+    600: "{ts} - {r_int}"
     # Up to 1 h, e.g. "1619295908 - 29 min ago (15:10)"
-    3600: "{ts} - {r_in}{r_float} {r_unit}{r_ago} (%H:%M)"
+    3600: "{ts} - {r_float} (%H:%M)"
     # Up to 1 day, e.g. "1619295908 - 5.5 h ago (12:00)"
-    86400: "{ts} - {r_in}{r_float} {r_unit}{r_ago} (%H:%M)"
+    86400: "{ts} - {r_float} (%H:%M)"
     # Up to 1 month, e.g. "1619295908 - 5.5 days ago (08-05 12:00)"
-    2678400: "{ts} - {r_in}{r_float} {r_unit}{r_ago} (%m-%d  %H:%M)"
+    2678400: "{ts} - {r_float} (%m-%d  %H:%M)"
     # Up to 1 year, e.g. "1619295908 - 9.2 months ago"
-    31536000: "{ts} - {r_in}{r_float} {r_unit}{r_ago}"
+    31536000: "{ts} - {r_float}"
     # Up to 75 years, e.g. "1619295908 - 5.8 years ago ('15)"
-    2365200000: "{ts} - {r_in}{r_float} {r_unit}{r_ago} ('%y)"
+    2365200000: "{ts} - {r_float} ('%y)"
     # Default if no other format matches, e.g. "1619295908 - 420 years ago"
     # Must be last element in the list
-    default: "{ts} - {r_in}{r_float} {r_unit}{r_ago}"
+    default: "{ts} - {r_float}"
 
 format_menu_last_timestamp: # TODO
 format_menu_last_datetime: # TODO

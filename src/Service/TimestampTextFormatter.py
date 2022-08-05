@@ -33,22 +33,23 @@ class TimestampTextFormatter:
 
         Formatter supports all standard strftime() codes:
         https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes
-        and these additional codes to for relative time:
+        and these custom codes to for relative time:
         - {ts} - unix timestamp.
-        - {r_int} - number for relative time, as integer. E.g. 5 if selected timestamp was 5.5 h ago .
-        - {r_float} - number for relative time, as float. E.g. 5.5 if selected timestamp was 5.5 h ago.
-        - {r_unit} - relative time unit name. E.g. 'h' if selected timestamp was 5.5 h ago.
-        - {r_in} - if timestamp is in the future, will be 'in '. Empty otherwise.
-        - {r_ago} - if timestamp is in the past, will be ' ago'. Empty otherwise.
+        - {r_int} - relative time with integer number, e.g. '5 h ago'.
+        - {r_float} - relative time with float number, e.g. '5.5 h ago'.
         """
+
+        relativeFormatArguments = (
+            '' if relativeTimeData['past'] else 'in ',
+            relativeTimeData['number'],
+            relativeTimeData['unit'],
+            ' ago' if relativeTimeData['past'] else '',
+        )
 
         formatted = template.format(
             ts=str(timestamp),
-            r_in='' if relativeTimeData['past'] else 'in ',
-            r_ago=' ago' if relativeTimeData['past'] else '',
-            r_float='%.1f' % relativeTimeData['number'],
-            r_int=int(relativeTimeData['number']),
-            r_unit=relativeTimeData['unit'],
+            r_int='%s%d %s%s' % relativeFormatArguments,
+            r_float='%s%.1f %s%s' % relativeFormatArguments,
         )
 
         dateTime = datetime.datetime.fromtimestamp(timestamp)
@@ -82,7 +83,7 @@ class TimestampTextFormatter:
             data.update({'number': diff / 3600.0, 'unit': 'h'})
         elif diff < 2678400:
             # up to 31 days
-            data.update({'number': diff / 86400.0, 'unit': 'd'})
+            data.update({'number': diff / 86400.0, 'unit': 'days'})
         elif diff < 31536000:
             # up to 365 days
             data.update({'number': diff / 2678400.0, 'unit': 'months'})
