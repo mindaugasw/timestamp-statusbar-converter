@@ -8,9 +8,12 @@ class Configuration:
     TIMESTAMP_MIN = 'timestamp_min'
     TIMESTAMP_MAX = 'timestamp_max'
     CLEAR_ON_CHANGE = 'clear_on_change'
-    # CLEAR_AFTER_TIME = 'clear_after_time'
     CLIPBOARD_POLLING_INTERVAL = 'clipboard_polling_interval'
     FORMAT_ICON = 'format_icon'
+    FORMAT_MENU_LAST_TIMESTAMP = 'format_menu_last_timestamp'
+    FORMAT_MENU_LAST_DATETIME = 'format_menu_last_datetime'
+    FORMAT_MENU_CURRENT_TIMESTAMP = 'format_menu_current_timestamp'
+    FORMAT_MENU_CURRENT_DATETIME = 'format_menu_current_datetime'
     DEBUG = 'debug'
 
     _configFileManager: ConfigFileManager

@@ -11,6 +11,7 @@ class TimestampParser:
     _maxValue: int
     _clearOnChange: bool
     _timestampSet = False
+    _skipTimestamp = None
 
     def __init__(self, config: Configuration, debug: Debug):
         self._debug = debug
@@ -20,19 +21,32 @@ class TimestampParser:
         self._maxValue = config.get(config.TIMESTAMP_MAX)
         self._clearOnChange = config.get(config.CLEAR_ON_CHANGE)
 
-        events.clipboardChanged.append(self.process)
+        events.clipboardChanged.append(self._process)
+        events.timestampChanged.append(lambda timestamp: self._setTimestampSet(True))
+        events.timestampCleared.append(lambda: self._setTimestampSet(False))
 
-    def process(self, content: str) -> None:
+    def skipNextTimestamp(self, timestamp: str) -> None:
+        """Set next expected timestamp value that should be ignored and not parsed
+
+        Can be used to intentionally ignore timestamp when it was set by the
+        application itself
+        """
+
+        self._skipTimestamp = timestamp
+
+    def _process(self, content: str) -> None:
+        if self._skipTimestamp == content:
+            self._skipTimestamp = None
+            return
+
         timestamp = self._extractTimestamp(content)
 
         if timestamp is False:
             if self._clearOnChange and self._timestampSet:
-                self._timestampSet = False
                 events.timestampCleared()
 
             return
 
-        self._timestampSet = True
         events.timestampChanged(timestamp)
 
     def _extractTimestamp(self, content: str) -> int | bool:
@@ -62,3 +76,6 @@ class TimestampParser:
             return False
 
         return number
+
+    def _setTimestampSet(self, timestampSet: bool) -> None:
+        self._timestampSet = timestampSet

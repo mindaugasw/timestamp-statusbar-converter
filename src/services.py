@@ -7,7 +7,6 @@ from src.Service.Debug import Debug
 from src.Service.ClipboardManager import ClipboardManager
 from src.Service.StatusbarApp import StatusbarApp
 
-# TODO pass services as parameters
 osSwitch = OSSwitch()
 configFileManager = ConfigFileManager()
 config = Configuration(configFileManager)
@@ -22,7 +21,7 @@ if osSwitch.isMacOS():
     from src.Service.StatusbarAppMacOs import StatusbarAppMacOs
 
     clipboard = ClipboardManagerMacOs(config, debug)
-    statusbarApp = StatusbarAppMacOs(timestampTextFormatter)
+    statusbarApp = StatusbarAppMacOs(timestampTextFormatter, clipboard, timestampParser, config)
 else:
     from src.Service.ClipboardManagerLinux import ClipboardManagerLinux
     from src.Service.StatusbarAppLinux import StatusbarAppLinux

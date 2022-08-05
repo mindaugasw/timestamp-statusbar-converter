@@ -53,10 +53,14 @@ format_icon:
     # Must be last element in the list
     default: "{ts} - {r_float}"
 
-format_menu_last_timestamp: # TODO
-format_menu_last_datetime: # TODO
-format_menu_current_timestamp: # TODO
-format_menu_current_datetime: # TODO
+# Format to use for menu items "Last timestamp" and "Last datetime"
+format_menu_last_timestamp: "{ts}"
+format_menu_last_datetime: "%Y-%m-%d %H:%M:%S"
+
+# Format for menu items "Current timestamp" and "Current datetime".
+# Will only affect copied value on click but not shown text in menu.
+format_menu_current_timestamp: "{ts}"
+format_menu_current_datetime: "%Y-%m-%d %H:%M:%S"
 
 # Will log additional info to the console if enabled
 debug: false

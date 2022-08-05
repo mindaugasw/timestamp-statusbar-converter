@@ -9,3 +9,7 @@ class ClipboardManager(metaclass=ABCMeta):
     @abstractmethod
     def watchClipboard(self) -> None:
         pass
+
+    @abstractmethod
+    def setClipboardContent(self, content: str) -> None:
+        pass

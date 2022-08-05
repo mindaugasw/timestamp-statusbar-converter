@@ -39,3 +39,10 @@ class ClipboardManagerMacOs(ClipboardManager):
                 events.clipboardChanged(content)
 
             time.sleep(self._pollingInterval)
+
+    def setClipboardContent(self, content: str) -> None:
+        try:
+            self._pb.set_contents(content)
+        except Exception as e:
+            # TODO create a custom exception class that allows passing previous exception
+            raise Exception('Could not set clipboard content.\nOriginal exception: ' + str(e))
