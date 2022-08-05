@@ -9,7 +9,7 @@ class Debug:
 
     def __init__(self, config: Configuration):
         self._config = config
-        self._debugEnabled = config.get(config.DEBUG_ENABLED)
+        self._debugEnabled = config.get(config.DEBUG)
 
         events.clipboardChanged.append(lambda content: self.log('Clipboard changed: ' + str(content)))
         events.timestampChanged.append(lambda timestamp: self.log('Timestamp detected: ' + str(timestamp)))

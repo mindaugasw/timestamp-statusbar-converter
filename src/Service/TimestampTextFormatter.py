@@ -9,7 +9,7 @@ class TimestampTextFormatter:
 
     def __init__(self, config: Configuration):
         # self._iconFormat = config.get(config.FORMAT_ICON)
-        self._iconFormats = config.get(config.ICON_FORMATS)
+        self._iconFormats = config.get(config.FORMAT_ICON)
 
     # Supports all standard strftime() formats and additional custom formats:
     # TODO update documentation

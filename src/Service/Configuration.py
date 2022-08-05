@@ -4,18 +4,18 @@ from src.Service.ConfigFileManager import ConfigFileManager
 
 class Configuration:
     # Config keys
-    # TIMESTAMP_PATTERN = ['timestamp_parsing', 'pattern']
-    TIMESTAMP_PATTERN = ['timestamp_pattern']
-    TIMESTAMP_MIN = ['timestamp_min']
-    TIMESTAMP_MAX = ['timestamp_max']
-    CLIPBOARD_POLLING_INTERVAL = ['clipboard_polling_interval']
-
-    # FORMAT_ICON = ['formatting', 'icon_format']
-    ICON_FORMATS = ['format_icon', 'icon_formats']
-    DEBUG_ENABLED = ['debug']
+    TIMESTAMP_PATTERN = 'timestamp_pattern'
+    TIMESTAMP_MIN = 'timestamp_min'
+    TIMESTAMP_MAX = 'timestamp_max'
+    # TIMESTAMP_CLEAR_AFTER_TIME
+    # TIMESTAMP_CLEAR_ON_CHANGE
+    # UPDATE_ON_HIGHLIGHT
+    # CLIPBOARD_POLLING
+    CLIPBOARD_POLLING_INTERVAL = 'clipboard_polling_interval'
+    FORMAT_ICON = 'format_icon'
+    DEBUG = 'debug'
 
     _configFileManager: ConfigFileManager
-
     _configGlobal: dict
     _configLocal: dict
     _configInitialized = False
@@ -23,7 +23,7 @@ class Configuration:
     def __init__(self, configFileManager: ConfigFileManager):
         self._configFileManager = configFileManager
 
-    def get(self, key: list):
+    def get(self, key: str):
         self._initializeConfig()
 
         localValue = self._getFromConfigData(key, self._configLocal)
@@ -45,16 +45,8 @@ class Configuration:
 
         self._configInitialized = True
 
-    def _getFromConfigData(self, key: list, config: dict):
+    def _getFromConfigData(self, key: str, config: dict):
         if config is None:
             return None
 
-        item = config.get(key[0])
-
-        for i in range(1, len(key)):
-            if item is None:
-                return None
-
-            item = item.get(key[i])
-
-        return item
+        return config.get(key)
