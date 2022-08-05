@@ -8,6 +8,7 @@ class Configuration:
     TIMESTAMP_MIN = 'timestamp_min'
     TIMESTAMP_MAX = 'timestamp_max'
     CLEAR_ON_CHANGE = 'clear_on_change'
+    CLEAR_AFTER_TIME = 'clear_after_time'
     FLASH_ICON_ON_CHANGE = 'flash_icon_on_change'
     CLIPBOARD_POLLING_INTERVAL = 'clipboard_polling_interval'
     FORMAT_ICON = 'format_icon'

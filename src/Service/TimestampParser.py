@@ -1,15 +1,22 @@
+import random
 import re
+import threading
+import time
 import src.events as events
 from src.Service import Configuration
 from src.Service.Debug import Debug
 
 
 class TimestampParser:
+    CLEARING_THREAD_SLEEP_INTERVAL = 5
+
     _debug: Debug
     _pattern: str
     _minValue: int
     _maxValue: int
     _clearOnChange: bool
+    _clearAfterTime: int
+    _lastTimestampId: int
     _timestampSet = False
     _skipTimestamp = None
 
@@ -20,10 +27,11 @@ class TimestampParser:
         self._minValue = config.get(config.TIMESTAMP_MIN)
         self._maxValue = config.get(config.TIMESTAMP_MAX)
         self._clearOnChange = config.get(config.CLEAR_ON_CHANGE)
+        self._clearAfterTime = config.get(config.CLEAR_AFTER_TIME)
 
         events.clipboardChanged.append(self._process)
-        events.timestampChanged.append(lambda timestamp: self._setTimestampSet(True))
-        events.timestampCleared.append(lambda: self._setTimestampSet(False))
+        events.timestampChanged.append(lambda timestamp: self._onTimestampChanged())
+        events.timestampCleared.append(lambda: self._onTimestampCleared())
 
     def skipNextTimestamp(self, timestamp: str) -> None:
         """Set next expected timestamp value that should be ignored and not parsed
@@ -77,5 +85,31 @@ class TimestampParser:
 
         return number
 
-    def _setTimestampSet(self, timestampSet: bool) -> None:
-        self._timestampSet = timestampSet
+    def _onTimestampChanged(self) -> None:
+        self._timestampSet = True
+
+        if self._clearAfterTime > 0:
+            self._lastTimestampId = random.randint(0, 99999)
+            threading.Thread(target=self._clearTimestampAfterTime).start()
+
+    def _onTimestampCleared(self) -> None:
+        self._timestampSet = False
+
+    def _clearTimestampAfterTime(self) -> None:
+        # This is used as a stop flag - if _lastTimestampId changes during
+        # thread's lifetime, that means timestamp has updated and this thread
+        # should exit without clearing new timestamp - a new thread was created
+        # for that with new countdown
+        initialTimestampId = self._lastTimestampId
+        threadStartedAt = int(time.time())
+        self._debug.log('Auto clear - starting thread #%d' % initialTimestampId)
+
+        while int(time.time()) - threadStartedAt < self._clearAfterTime:
+            time.sleep(self.CLEARING_THREAD_SLEEP_INTERVAL)
+
+            if initialTimestampId != self._lastTimestampId:
+                self._debug.log('Auto clear - timestamp changed, exiting thread #%d' % initialTimestampId)
+                return
+
+        self._debug.log('Auto clear - clearing timestamp #%d' % initialTimestampId)
+        events.timestampCleared()

@@ -10,7 +10,9 @@ timestamp_max: 4102444800 # 2100-01-01
 # If enabled, text in the statusbar will be cleared after copying anything else
 clear_on_change: false
 
-clear_after_time: 0 # TODO
+# After how long, in seconds, to clear text in the status bar.
+# 0 or less to disable automatic clearing.
+clear_after_time: 0
 
 # Supported only on Linux, ignored on macOS # TODO
 update_on_highlight: true # TODO
