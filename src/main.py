@@ -6,7 +6,8 @@ def main():
     if services.osSwitch.isMacOS():
         _hideMacOSDockIcon()
 
-    print('OS: ' + str(services.osSwitch.os) + ', Python: ' + platform.python_version())
+    # TODO print app version as well
+    print('OS: %s, Python: %s' % (services.osSwitch.os, platform.python_version()))
 
     services.clipboard.watchClipboardThreaded()
     services.statusbarApp.createApp()

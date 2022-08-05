@@ -12,6 +12,7 @@ class StatusbarAppMacOs(StatusbarApp):
     def __init__(self, timestampTextFormatter: TimestampTextFormatter):
         self._timestampTextFormatter = timestampTextFormatter
         events.timestampChanged.append(self._onTimestampChange)
+        events.timestampCleared.append(self._onTimestampClear)
 
     def createApp(self) -> None:
         self._menuItems = self._createMenuItems()
@@ -48,6 +49,9 @@ class StatusbarAppMacOs(StatusbarApp):
         niceText = self._timestampTextFormatter.formatForIcon(timestamp)
         self._rumpsApp.title = niceText
         asd = 5  # TODO remove
+
+    def _onTimestampClear(self) -> None:
+        self._rumpsApp.title = None
 
     def _onClickTime(self, item: MenuItem):
         print('Clicked: ' + item.title) # TODO test if item.title changes or is original. If changes, handle timestamp title

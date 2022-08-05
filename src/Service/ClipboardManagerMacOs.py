@@ -27,13 +27,15 @@ class ClipboardManagerMacOs(ClipboardManager):
         while True:
             content = self._pb.get_contents(type=pasteboard.String, diff=True)
 
-            # If content did not change between 2 polls, pb.get_content will
-            # return None.
-            # On first iteration will return content copied before opening app,
-            # which is not desired
-            if content is not None and not firstIteration:
-                events.clipboardChanged(content)
-            else:
+            # On first iteration Pasteboard will return content copied before
+            # opening app, which is not desired
+            if firstIteration:
                 firstIteration = False
+                continue
+
+            # If content did not change between 2 polls, pb.get_contents() will
+            # return None.
+            if content is not None:
+                events.clipboardChanged(content)
 
             time.sleep(self._pollingInterval)

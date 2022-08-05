@@ -7,10 +7,8 @@ class Configuration:
     TIMESTAMP_PATTERN = 'timestamp_pattern'
     TIMESTAMP_MIN = 'timestamp_min'
     TIMESTAMP_MAX = 'timestamp_max'
-    # TIMESTAMP_CLEAR_AFTER_TIME
-    # TIMESTAMP_CLEAR_ON_CHANGE
-    # UPDATE_ON_HIGHLIGHT
-    # CLIPBOARD_POLLING
+    CLEAR_ON_CHANGE = 'clear_on_change'
+    # CLEAR_AFTER_TIME = 'clear_after_time'
     CLIPBOARD_POLLING_INTERVAL = 'clipboard_polling_interval'
     FORMAT_ICON = 'format_icon'
     DEBUG = 'debug'

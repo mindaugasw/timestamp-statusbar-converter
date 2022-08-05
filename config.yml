@@ -7,12 +7,15 @@ timestamp_pattern: "^\\d{9,10}$"
 timestamp_min: 100000000 # 1973-03-03
 timestamp_max: 4102444800 # 2100-01-01
 
-timestamp_clear_after_time: 0 # TODO
+# If true, text in the statusbar will be cleared after copying anything else
+clear_on_change: false
 
-timestamp_clear_on_change:  false # TODO
+clear_after_time: 0 # TODO
 
 # Supported only on Linux, ignored on macOS # TODO
 update_on_highlight: true # TODO
+
+flash_icon_on_change: true # TODO
 
 clipboard_polling: false # TODO
 

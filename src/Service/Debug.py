@@ -11,8 +11,10 @@ class Debug:
         self._config = config
         self._debugEnabled = config.get(config.DEBUG)
 
-        events.clipboardChanged.append(lambda content: self.log('Clipboard changed: ' + str(content)))
-        events.timestampChanged.append(lambda timestamp: self.log('Timestamp detected: ' + str(timestamp)))
+        if self._debugEnabled:
+            events.clipboardChanged.append(lambda content: self.log('Clipboard changed: ' + str(content)))
+            events.timestampChanged.append(lambda timestamp: self.log('Timestamp detected: ' + str(timestamp)))
+            events.timestampCleared.append(lambda: self.log('Timestamp cleared'))
 
     def log(self, content):
         if self._debugEnabled:
