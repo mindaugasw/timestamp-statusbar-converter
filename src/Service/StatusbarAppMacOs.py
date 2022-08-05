@@ -1,4 +1,5 @@
 import subprocess
+import threading
 import time
 from rumps import App, MenuItem
 from src.Service.ClipboardManager import ClipboardManager
@@ -11,6 +12,9 @@ import src.events as events
 
 class StatusbarAppMacOs(StatusbarApp):
     WEBSITE = 'https://github.com/mindaugasw/timestamp-statusbar-converter'
+    ICON_DEFAULT = '../assets/icon.png'
+    ICON_FLASH = '../assets/icon_flash.png'
+    ICON_FLASH_DURATION = 0.35
 
     _formatter: TimestampTextFormatter
     _clipboard: ClipboardManager
@@ -22,13 +26,14 @@ class StatusbarAppMacOs(StatusbarApp):
     _formatLastDatetime: str
     _formatCurrentTimestamp: str
     _formatCurrentDatetime: str
+    _flashIconOnChange: bool
 
     def __init__(
         self,
         formatter: TimestampTextFormatter,
         clipboard: ClipboardManager,
         timestampParser: TimestampParser,
-        config: Configuration
+        config: Configuration,
     ):
         self._formatter = formatter
         self._clipboard = clipboard
@@ -38,6 +43,7 @@ class StatusbarAppMacOs(StatusbarApp):
         self._formatLastDatetime = config.get(config.FORMAT_MENU_LAST_DATETIME)
         self._formatCurrentTimestamp = config.get(config.FORMAT_MENU_CURRENT_TIMESTAMP)
         self._formatCurrentDatetime = config.get(config.FORMAT_MENU_CURRENT_DATETIME)
+        self._flashIconOnChange = config.get(config.FLASH_ICON_ON_CHANGE)
 
         events.timestampChanged.append(self._onTimestampChange)
         events.timestampCleared.append(self._onTimestampClear)
@@ -47,7 +53,7 @@ class StatusbarAppMacOs(StatusbarApp):
         self._rumpsApp = App(
             StatusbarApp.APP_NAME,
             None,
-            '../assets/icon.png',
+            self.ICON_DEFAULT,
             True,
             self._menuItems.values(),
         )
@@ -89,6 +95,9 @@ class StatusbarAppMacOs(StatusbarApp):
         self._menuItems['last_timestamp'].title = self._getLastTimestampText(timestamp)
         self._menuItems['last_datetime'].title = self._getLastDatetimeText(timestamp)
 
+        if self._flashIconOnChange:
+            threading.Thread(target=self._flashIcon).start()
+
     def _onTimestampClear(self) -> None:
         self._rumpsApp.title = None
 
@@ -114,3 +123,8 @@ class StatusbarAppMacOs(StatusbarApp):
         subprocess.Popen(['open', self.WEBSITE])
         # TODO use xdg-open on Linux
         # https://stackoverflow.com/a/4217323/4110469
+
+    def _flashIcon(self) -> None:
+        self._rumpsApp.icon = self.ICON_FLASH
+        time.sleep(self.ICON_FLASH_DURATION)
+        self._rumpsApp.icon = self.ICON_DEFAULT

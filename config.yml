@@ -7,7 +7,7 @@ timestamp_pattern: "^\\d{9,10}$"
 timestamp_min: 100000000 # 1973-03-03
 timestamp_max: 4102444800 # 2100-01-01
 
-# If true, text in the statusbar will be cleared after copying anything else
+# If enabled, text in the statusbar will be cleared after copying anything else
 clear_on_change: false
 
 clear_after_time: 0 # TODO
@@ -15,13 +15,14 @@ clear_after_time: 0 # TODO
 # Supported only on Linux, ignored on macOS # TODO
 update_on_highlight: true # TODO
 
-flash_icon_on_change: true # TODO
+# If enabled, will shortly flash status bar icon on timestamp change
+flash_icon_on_change: true
 
 clipboard_polling: false # TODO
 
 # Interval in seconds for clipboard polling to find changed content.
 # Has no effect if on Linux and clipboard polling is disabled.
-clipboard_polling_interval: 0.5
+clipboard_polling_interval: 0.33
 
 # Formatting template for main text, on the statusbar.
 # Will use first template found where key is less than relative time difference
@@ -62,5 +63,5 @@ format_menu_last_datetime: "%Y-%m-%d %H:%M:%S"
 format_menu_current_timestamp: "{ts}"
 format_menu_current_datetime: "%Y-%m-%d %H:%M:%S"
 
-# Will log additional info to the console if enabled
+# If enabled, will log additional info to the console
 debug: false
