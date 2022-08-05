@@ -5,7 +5,7 @@ class OSSwitch:
     OS_MAC_OS = 'Darwin'
     OS_LINUX = 'Linux'
 
-    os: str | None = None
+    os: str
 
     def __init__(self):
         self.os = platform.system()

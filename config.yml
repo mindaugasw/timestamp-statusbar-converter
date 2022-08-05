@@ -27,13 +27,13 @@ clipboard_polling_interval: 0.5
 #
 # Templates support all standard strftime() codes:
 # https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes
-# and these additional codes to show relative time:
-# - ts - unix timestamp.
-# - r_int - number for relative time, as integer. E.g. 5 if selected timestamp was 5.5 h ago .
-# - r_float - number for relative time, as float. E.g. 5.5 if selected timestamp was 5.5 h ago.
-# - r_unit - relative time unit name. E.g. 'h' if selected timestamp was 5.5 h ago.
-# - r_in - if timestamp is in the future, will be 'in '. Empty otherwise.
-# - r_ago - if timestamp is in the past, will be ' ago'. Empty otherwise.
+# and these additional codes for relative time:
+# - {ts} - unix timestamp.
+# - {r_int} - number for relative time, as integer. E.g. 5 if selected timestamp was 5.5 h ago .
+# - {r_float} - number for relative time, as float. E.g. 5.5 if selected timestamp was 5.5 h ago.
+# - {r_unit} - relative time unit name. E.g. 'h' if selected timestamp was 5.5 h ago.
+# - {r_in} - if timestamp is in the future, will be 'in '. Empty otherwise.
+# - {r_ago} - if timestamp is in the past, will be ' ago'. Empty otherwise.
 format_icon:
     # Up to 60 s, e.g. "1619295908 - 59 s ago"
     60: "{ts} - {r_in}{r_int} {r_unit}{r_ago}"

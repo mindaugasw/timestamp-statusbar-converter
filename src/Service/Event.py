@@ -25,7 +25,6 @@ class Event(list):
     >>> del e[0]
     >>> e(2)
     g(2)
-
     """
     def __call__(self, *args, **kwargs):
         for f in self:
