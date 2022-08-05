@@ -1,0 +1,3 @@
+# Warning: local config will not be automatically updated and may break new app versions in the future
+# See all supported configuration on TODO github link to config.local.example.yml
+# Don't forget to restart the application after changing configuration.

@@ -1,0 +1,66 @@
+# TODO convert to flat structure?
+# Regex to detect timestamp in copied text.
+# Before matching whitespace will be stripped on both sides.
+# Default matches any 9-10 characters integer (current timestamp is 10 characters long).
+timestamp_pattern: "^\\d{9,10}$"
+
+# Minimum/maximum values for timestamp.
+# If found number exceeds them, it will not be considered a valid timestamp
+timestamp_min: 100000000 # 1973-03-03
+timestamp_max: 4102444800 # 2100-01-01
+
+# Supported only on Linux, ignored on macOS # TODO
+#    update_on_select: true # TODO
+clipboard_polling: false
+
+# Interval in seconds between clipboard checks to find changed content
+# Only has effect on Linux if clipboard polling is disabled and always on macOS
+clipboard_polling_interval: 0.5 # TODO?
+
+timestamp_clear_after_time: 0 # TODO
+
+timestamp_clear_on_change:  false # TODO
+
+# Formatting template for main text, on the statusbar
+
+format_icon:
+
+    # Formats must be in ascending order by time difference
+    # ~~Negative numbers also supported,
+    # https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes
+
+    icon_formats:
+        # Up to 60 s, e.g. "1619295908 - 59 s ago"
+        60: "{ts} - {r_in}{r_int} {r_unit}{r_ago}"
+        # Up to 10 min, e.g. "1619295908 - 5 min ago"
+        600: "{ts} - {r_in}{r_int} {r_unit}{r_ago}"
+        # Up to 1 h, e.g. "1619295908 - 29 min ago (15:10)"
+        3600: "{ts} - {r_in}{r_float} {r_unit}{r_ago} (%H:%M)"
+        # Up to 1 day, e.g. "1619295908 - 5.5 h ago (12:00)"
+        86400: "{ts} - {r_in}{r_float} {r_unit}{r_ago} (%H:%M)"
+        # Up to 1 month, e.g. "1619295908 - 5.5 days ago (08-05 12:00)"
+        2678400: "{ts} - {r_in}{r_float} {r_unit}{r_ago} (%m-%d  %H:%M)"
+        # Up to 1 year, e.g. "1619295908 - 9.2 months ago"
+        31536000: "{ts} - {r_in}{r_float} {r_unit}{r_ago}"
+        # Up to 75 years, e.g. "1619295908 - 5.8 years ago ('15)"
+        2365200000: "{ts} - {r_in}{r_float} {r_unit}{r_ago} ('%y)"
+        # Default if no other format matches, e.g. "1619295908 - 420 years ago"
+        # Must be last element in the list
+        default: "{ts} - {r_in}{r_float} {r_unit}{r_ago}"
+
+    # Unit names for relative time, e.g. what to write instead of "min" for time "5 min ago"
+    # TODO remove?
+#    relative_units:
+#        second: "s"
+#        minute: "min"
+#        hour: "h"
+#        day: "d"
+#        month: "months"
+#        year: "years"
+    menu_formats: # TODO
+        last_timestamp:
+        last_datetime:
+        current_timestamp:
+        current_datetime:
+# Will log additional info to the console if enabled
+debug: !!bool true
