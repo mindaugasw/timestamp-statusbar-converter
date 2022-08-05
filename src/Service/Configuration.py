@@ -31,9 +31,7 @@ class Configuration:
         if localValue is not None:
             return localValue
 
-        # TODO inline return
-        globalVal = self._getFromConfigData(key, self._configGlobal)
-        return globalVal
+        return self._getFromConfigData(key, self._configGlobal)
 
     def _initializeConfig(self) -> None:
         if self._configInitialized:

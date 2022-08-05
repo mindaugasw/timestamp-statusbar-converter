@@ -8,15 +8,14 @@ import src.events as events
 
 
 class ClipboardManagerMacOs(ClipboardManager):
-    _debug: Debug
     _pb: pasteboard.Pasteboard
-
+    _debug: Debug
     _pollingInterval: float
 
     def __init__(self, config: Configuration, debug: Debug):
         self._debug = debug
         self._pb = pasteboard.Pasteboard()
-        # self._pollingInterval = config.get(config.)
+        self._pollingInterval = config.get(config.CLIPBOARD_POLLING_INTERVAL)
 
     def watchClipboardThreaded(self) -> None:
         # TODO move this to common class?
@@ -33,12 +32,8 @@ class ClipboardManagerMacOs(ClipboardManager):
             # On first iteration will return content copied before opening app,
             # which is not desired
             if content is not None and not firstIteration:
-                # self._debug.log('Clipboard change: ' + str(content))
-                # TODO remove
-                # print(content)
                 events.clipboardChanged(content)
             else:
                 firstIteration = False
 
-            # TODO read time value from config
-            time.sleep(0.5)
+            time.sleep(self._pollingInterval)

@@ -6,7 +6,6 @@ import src.events as events
 
 class StatusbarAppMacOs(StatusbarApp):
     _timestampTextFormatter: TimestampTextFormatter
-
     _rumpsApp: App
     _menuItems: dict[str, MenuItem | None]
 
