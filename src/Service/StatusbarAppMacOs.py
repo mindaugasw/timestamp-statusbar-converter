@@ -1,8 +1,9 @@
 import subprocess
 import threading
 import time
-from rumps import App, MenuItem
+from rumps import App, MenuItem, rumps
 from src.Service.ClipboardManager import ClipboardManager
+from src.Service.ConfigFileManager import ConfigFileManager
 from src.Service.Configuration import Configuration
 from src.Service.StatusbarApp import StatusbarApp
 from src.Service.TimestampParser import TimestampParser
@@ -19,6 +20,7 @@ class StatusbarAppMacOs(StatusbarApp):
     _formatter: TimestampTextFormatter
     _clipboard: ClipboardManager
     _timestampParser: TimestampParser
+    _configFileManager: ConfigFileManager
     _rumpsApp: App
 
     _menuItems: dict[str, MenuItem | None]
@@ -34,10 +36,12 @@ class StatusbarAppMacOs(StatusbarApp):
         clipboard: ClipboardManager,
         timestampParser: TimestampParser,
         config: Configuration,
+        configFileManager: ConfigFileManager,
     ):
         self._formatter = formatter
         self._clipboard = clipboard
         self._timestampParser = timestampParser
+        self._configFileManager = configFileManager
 
         self._formatLastTimestamp = config.get(config.FORMAT_MENU_LAST_TIMESTAMP)
         self._formatLastDatetime = config.get(config.FORMAT_MENU_LAST_DATETIME)
@@ -79,7 +83,7 @@ class StatusbarAppMacOs(StatusbarApp):
             'current_datetime': MenuItem('Current datetime', self._onMenuClickCurrentTime),
             'separator_2': None,
             'clear_timestamp': MenuItem('Clear timestamp', self._onMenuClickClearTimestamp),
-            'edit_config': MenuItem('Edit configuration'),  # TODO
+            'edit_config': MenuItem('Edit configuration', self._onMenuClickEditConfiguration),
             'check_for_updates': MenuItem('Check for updates'),  # TODO
             'open_website': MenuItem('Open website', self._onMenuClickOpenWebsite),
         }
@@ -118,6 +122,22 @@ class StatusbarAppMacOs(StatusbarApp):
 
     def _onMenuClickClearTimestamp(self, item: MenuItem) -> None:
         events.timestampCleared()
+
+    def _onMenuClickEditConfiguration(self, item: MenuItem) -> None:
+        configFilePath = self._configFileManager.getLocalConfigFullPath()
+
+        alertResult = rumps.alert(
+            'Edit configuration',
+            f'Configuration can be edited in the file: \n{configFilePath}\n\n'
+            'After editing, the application must be restarted.\n\n'
+            'All supported configuration can be found at:\n'
+            'https://github.com/mindaugasw/timestamp-statusbar-converter/blob/master/config.yml',
+            'Open in default editor',
+            'Close',
+        )
+
+        if alertResult == 1:
+            subprocess.Popen(['open', configFilePath])
 
     def _onMenuClickOpenWebsite(self, item: MenuItem) -> None:
         subprocess.Popen(['open', self.WEBSITE])

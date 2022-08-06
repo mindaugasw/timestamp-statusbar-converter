@@ -21,7 +21,7 @@ if osSwitch.isMacOS():
     from src.Service.StatusbarAppMacOs import StatusbarAppMacOs
 
     clipboard = ClipboardManagerMacOs(config, debug)
-    statusbarApp = StatusbarAppMacOs(timestampTextFormatter, clipboard, timestampParser, config)
+    statusbarApp = StatusbarAppMacOs(timestampTextFormatter, clipboard, timestampParser, config, configFileManager)
 else:
     from src.Service.ClipboardManagerLinux import ClipboardManagerLinux
     from src.Service.StatusbarAppLinux import StatusbarAppLinux

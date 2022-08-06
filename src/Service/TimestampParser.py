@@ -102,14 +102,14 @@ class TimestampParser:
         # for that with new countdown
         initialTimestampId = self._lastTimestampId
         threadStartedAt = int(time.time())
-        self._debug.log('Auto clear - starting thread #%d' % initialTimestampId)
+        self._debug.log(f'Auto clear - starting thread #{initialTimestampId}')
 
         while int(time.time()) - threadStartedAt < self._clearAfterTime:
             time.sleep(self.CLEARING_THREAD_SLEEP_INTERVAL)
 
             if initialTimestampId != self._lastTimestampId:
-                self._debug.log('Auto clear - timestamp changed, exiting thread #%d' % initialTimestampId)
+                self._debug.log(f'Auto clear - timestamp changed, exiting thread #{initialTimestampId}')
                 return
 
-        self._debug.log('Auto clear - clearing timestamp #%d' % initialTimestampId)
+        self._debug.log(f'Auto clear - clearing timestamp #{initialTimestampId}')
         events.timestampCleared()

@@ -7,7 +7,7 @@ def main():
         _hideMacOSDockIcon()
 
     # TODO print app version as well
-    print('OS: %s, Python: %s' % (services.osSwitch.os, platform.python_version()))
+    print(f'OS: {services.osSwitch.os}, Python: {platform.python_version()}')
 
     services.clipboard.watchClipboardThreaded()
     services.statusbarApp.createApp()
@@ -16,7 +16,7 @@ def main():
 def _hideMacOSDockIcon():
     import AppKit
     info = AppKit.NSBundle.mainBundle().infoDictionary()
-    info["LSBackgroundOnly"] = "1"
+    info['LSBackgroundOnly'] = '1'
 
 
 if __name__ == '__main__':

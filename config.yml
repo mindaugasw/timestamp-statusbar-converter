@@ -10,7 +10,7 @@ timestamp_max: 4102444800 # 2100-01-01
 # If enabled, text in the statusbar will be cleared after copying anything else
 clear_on_change: false
 
-# After how long, in seconds, to clear text in the status bar.
+# Automatically clear text in the status bar after this time, in seconds.
 # 0 or less to disable automatic clearing.
 clear_after_time: 0
 
@@ -26,10 +26,11 @@ clipboard_polling: false # TODO
 # Has no effect if on Linux and clipboard polling is disabled.
 clipboard_polling_interval: 0.33
 
-# Formatting template for main text, on the statusbar.
+# Formatting template for main text on the statusbar.
 # Will use first template found where key is less than relative time difference
 # in seconds.
-# Formats must be in ascending order by time difference in their key.
+#
+# Templates must be ordered ascending by time difference in their key.
 #
 # Templates support all standard strftime() codes:
 # https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes

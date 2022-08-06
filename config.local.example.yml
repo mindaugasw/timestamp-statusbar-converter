@@ -1,3 +1,7 @@
-# Warning: local config will not be automatically updated and may break new app versions in the future
-# See all supported configuration on TODO github link to config.local.example.yml
-# Don't forget to restart the application after changing configuration.
+# Warning: local config will not be updated automatically and may break new app
+# versions in the future.
+#
+# All supported configuration can be found at
+# https://github.com/mindaugasw/timestamp-statusbar-converter/blob/master/config.yml
+#
+# After editing configuration the application must be restarted.
