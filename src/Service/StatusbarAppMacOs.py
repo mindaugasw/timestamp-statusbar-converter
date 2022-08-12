@@ -1,4 +1,6 @@
+import os
 import subprocess
+import sys
 import threading
 import time
 from rumps import App, MenuItem, rumps
@@ -87,6 +89,7 @@ class StatusbarAppMacOs(StatusbarApp):
             'edit_config': MenuItem('Edit configuration', self._onMenuClickEditConfiguration),
             'check_for_updates': MenuItem('Check for updates'),  # TODO
             'open_website': MenuItem('Open website', self._onMenuClickOpenWebsite),
+            'restart': MenuItem('Restart application', self._onMenuClickRestart),
         }
 
     def _getLastTimestampText(self, timestamp: Timestamp) -> str:
@@ -144,6 +147,9 @@ class StatusbarAppMacOs(StatusbarApp):
         subprocess.Popen(['open', self.WEBSITE])
         # TODO use xdg-open on Linux
         # https://stackoverflow.com/a/4217323/4110469
+
+    def _onMenuClickRestart(self, item: MenuItem) -> None:
+        os.execl(sys.executable, os.path.abspath(__file__), *sys.argv)
 
     def _flashIcon(self) -> None:
         self._rumpsApp.icon = self.ICON_FLASH
