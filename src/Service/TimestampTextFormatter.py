@@ -1,6 +1,7 @@
 import datetime
 import time
 from src.Service.Configuration import Configuration
+from src.Entity.Timestamp import Timestamp
 
 
 class TimestampTextFormatter:
@@ -9,13 +10,13 @@ class TimestampTextFormatter:
     def __init__(self, config: Configuration):
         self._iconFormats = config.get(config.FORMAT_ICON)
 
-    def format(self, timestamp: int, template: str) -> str:
-        return self._formatInternal(timestamp, template, self._getRelativeTimeData(timestamp))
+    def format(self, timestamp: Timestamp, template: str) -> str:
+        return self._formatInternal(timestamp, template, self._getRelativeTimeData(timestamp.seconds))
 
-    def formatForIcon(self, timestamp: int) -> str:
+    def formatForIcon(self, timestamp: Timestamp) -> str:
         """Format timestamp for main icon, according to user config"""
 
-        timeData = self._getRelativeTimeData(timestamp)
+        timeData = self._getRelativeTimeData(timestamp.seconds)
         formatTemplate: str | None = None
 
         for key, template in self._iconFormats.items():
@@ -28,13 +29,14 @@ class TimestampTextFormatter:
 
         return self._formatInternal(timestamp, formatTemplate, timeData)
 
-    def _formatInternal(self, timestamp: int, template: str, relativeTimeData: dict) -> str:
+    def _formatInternal(self, timestamp: Timestamp, template: str, relativeTimeData: dict) -> str:
         """Format timestamp with relative time support
 
         Formatter supports all standard strftime() codes:
         https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes
         and these custom codes to for relative time:
-        - {ts} - unix timestamp.
+        - {ts} - unix timestamp. Milliseconds will be separated for better readability.
+        - {ts_ms} - unix timestamp. Milliseconds won't be separated to allow copying a valid timestamp.
         - {r_int} - relative time with integer number, e.g. '5 h ago'.
         - {r_float} - relative time with float number, e.g. '5.5 h ago'.
         """
@@ -47,12 +49,13 @@ class TimestampTextFormatter:
         )
 
         formatted = template.format(
-            ts=str(timestamp),
+            ts=timestamp.getStringPretty(),
+            ts_ms=timestamp.getStringValid(),
             r_int='%s%d %s%s' % relativeFormatArguments,
             r_float='%s%.1f %s%s' % relativeFormatArguments,
         )
 
-        dateTime = datetime.datetime.fromtimestamp(timestamp)
+        dateTime = datetime.datetime.fromtimestamp(timestamp.seconds)
 
         return dateTime.strftime(formatted)
 

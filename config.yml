@@ -1,18 +1,16 @@
-# Regex to detect timestamp in copied text.
-# Before matching whitespace will be stripped on both sides.
-timestamp_pattern: "^\\d{9,10}$"
-
 # Minimum/maximum values for timestamp.
 # If found number exceeds them, it will not be considered a valid timestamp.
+# timestamp_min can be up to 10 characters long (0-9999999999)
 timestamp_min: 100000000 # 1973-03-03
-timestamp_max: 4102444800 # 2100-01-01
+# timestamp_max can be up to 11 characters long (0-99999999999)
+timestamp_max: 7258111200 # 2200-01-01
 
 # If enabled, text in the statusbar will be cleared after copying anything else
 clear_on_change: false
 
 # Automatically clear text in the status bar after this time, in seconds.
 # 0 or less to disable automatic clearing.
-clear_after_time: 0
+clear_after_time: 300
 
 # Supported only on Linux, ignored on macOS # TODO
 update_on_highlight: true # TODO
@@ -23,7 +21,7 @@ flash_icon_on_change: true
 clipboard_polling: false # TODO
 
 # Interval in seconds for clipboard polling to find changed content.
-# Has no effect if on Linux and clipboard polling is disabled.
+# Has no effect when on Linux and clipboard polling is disabled.
 clipboard_polling_interval: 0.33
 
 # Formatting template for main text on the statusbar.
@@ -35,7 +33,8 @@ clipboard_polling_interval: 0.33
 # Templates support all standard strftime() codes:
 # https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes
 # and these custom codes for relative time:
-# - {ts} - unix timestamp.
+# - {ts} - unix timestamp. Milliseconds will be separated by for better readability.
+# - {ts_ms} - unix timestamp. Milliseconds won't be separated to allow copying a valid timestamp.
 # - {r_int} - relative time with integer number, e.g. '5 h ago'.
 # - {r_float} - relative time with float number, e.g. '5.5 h ago'.
 format_icon:
@@ -58,7 +57,7 @@ format_icon:
     default: "{ts} - {r_float}"
 
 # Format to use for menu items "Last timestamp" and "Last datetime"
-format_menu_last_timestamp: "{ts}"
+format_menu_last_timestamp: "{ts_ms}"
 format_menu_last_datetime: "%Y-%m-%d %H:%M:%S"
 
 # Format for menu items "Current timestamp" and "Current datetime".

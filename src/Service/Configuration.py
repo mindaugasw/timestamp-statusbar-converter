@@ -4,7 +4,6 @@ from src.Service.ConfigFileManager import ConfigFileManager
 
 class Configuration:
     # Config keys
-    TIMESTAMP_PATTERN = 'timestamp_pattern'
     TIMESTAMP_MIN = 'timestamp_min'
     TIMESTAMP_MAX = 'timestamp_max'
     CLEAR_ON_CHANGE = 'clear_on_change'

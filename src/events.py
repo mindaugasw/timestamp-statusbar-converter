@@ -5,7 +5,7 @@ from src.Service.Event import Event
 clipboardChanged = Event()
 
 # Raised after clipboard change, if a valid timestamp was found.
-# Passed an integer with new timestamp
+# Passed a Timestamp object
 timestampChanged = Event()
 
 # Raised when previously found timestamp should be cleared, either because new

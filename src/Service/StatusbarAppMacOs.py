@@ -9,6 +9,7 @@ from src.Service.StatusbarApp import StatusbarApp
 from src.Service.TimestampParser import TimestampParser
 from src.Service.TimestampTextFormatter import TimestampTextFormatter
 import src.events as events
+from src.Entity.Timestamp import Timestamp
 
 
 class StatusbarAppMacOs(StatusbarApp):
@@ -64,7 +65,7 @@ class StatusbarAppMacOs(StatusbarApp):
         self._rumpsApp.run()
 
     def _createMenuItems(self) -> dict[str, MenuItem | None]:
-        lastTimestamp = int(time.time())
+        lastTimestamp = Timestamp(int(time.time()))
 
         return {
             # Items without callback are disabled and act as informational labels
@@ -88,13 +89,13 @@ class StatusbarAppMacOs(StatusbarApp):
             'open_website': MenuItem('Open website', self._onMenuClickOpenWebsite),
         }
 
-    def _getLastTimestampText(self, timestamp: int) -> str:
+    def _getLastTimestampText(self, timestamp: Timestamp) -> str:
         return self._formatter.format(timestamp, self._formatLastTimestamp)
 
-    def _getLastDatetimeText(self, timestamp: int) -> str:
+    def _getLastDatetimeText(self, timestamp: Timestamp) -> str:
         return self._formatter.format(timestamp, self._formatLastDatetime)
 
-    def _onTimestampChange(self, timestamp: int) -> None:
+    def _onTimestampChange(self, timestamp: Timestamp) -> None:
         self._rumpsApp.title = self._formatter.formatForIcon(timestamp)
         self._menuItems['last_timestamp'].title = self._getLastTimestampText(timestamp)
         self._menuItems['last_datetime'].title = self._getLastDatetimeText(timestamp)
