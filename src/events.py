@@ -1,4 +1,4 @@
-from src.Service.Event import Event
+from src.Entity.Event import Event
 
 # Raised when clipboard content changes, not necessarily to a valid timestamp.
 # Passed a string with new clipboard content
